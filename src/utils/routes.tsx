@@ -7,10 +7,9 @@ import Auth from "../routes/auth/Auth";
 const router = createBrowserRouter([
   {
     path: "/",
-    loader:
-      async () => {
-        return redirect("/auth");
-      }
+    loader: async () => {
+      return redirect("/auth");
+    },
   },
   {
     path: "/auth",
@@ -18,21 +17,18 @@ const router = createBrowserRouter([
     children: [
       {
         path: "login",
-        element: <Login />
+        element: <Login />,
       },
       {
         path: "register",
-        element: <Register />
-      }
-    ]
+        element: <Register />,
+      },
+    ],
   },
   {
     path: "/app",
-    element: <App />
-  }
-]
-)
-
-
+    element: <App />,
+  },
+]);
 
 export default router;

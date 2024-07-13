@@ -4,13 +4,13 @@ import FormInput from "./Input";
 
 export default function FormComponent({
   children,
+  inputs,
+  buttonText = "Sign in",
 }: {
+  buttonText?: string;
+  inputs: Array<{ pl: string; value: string }>;
   children: React.ReactElement;
 }): React.ReactElement {
-  const inputs: Array<{ pl: string; value: string }> = [
-    { pl: "Email", value: "" },
-    { pl: "Password", value: "" },
-  ];
   const { form } = useOutletContext<{
     form: {
       formData: { [key: string]: string; name: string };
@@ -33,7 +33,7 @@ export default function FormComponent({
           size={"lg"}
           _hover={{ boxShadow: "base" }}
         >
-          Sign in
+          {buttonText}
         </Button>
       </Stack>
     </form>
