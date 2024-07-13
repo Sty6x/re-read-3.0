@@ -3,16 +3,16 @@ import FormComponent from "./FormComponent";
 import { Button } from "@chakra-ui/react";
 
 export default function Register(): React.ReactElement {
-  const inputs: Array<{ pl: string; value: string }> = [
-    { pl: "Email", value: "" },
-    { pl: "Password", value: "" },
-    { pl: "Confirm Password", value: "" },
+  const inputs: Array<{ pl: string; value: string; type: string }> = [
+    { pl: "Email", value: "", type: "mail" },
+    { pl: "Password", value: "", type: "password" },
+    { pl: "Confirm Password", value: "", type: "password" },
   ];
   const navigate = useNavigate();
   return (
     <div className="auth-form-login max-w-[700px] w-80">
       <FormComponent inputs={inputs} buttonText={"Create account"}>
-        <h1 className="mb-4 font-bold text-center">Sign up to Re:Read</h1>
+        <h1 className="mb-4 font-extrabold text-center">Sign up to Re:Read</h1>
       </FormComponent>
       <div
         id="auth-footer"
@@ -20,7 +20,7 @@ export default function Register(): React.ReactElement {
       >
         <div
           id="auth-footer-btn"
-          className="border-t-2 pt-3 border-t-lw-400 min-w-full mt-4 "
+          className="border-t-2 pt-3 border-t-lw-400 min-w-full mt-2 "
         >
           <p className="!text-lw-100 text-xs text-center">
             Have an existing account?
@@ -28,7 +28,8 @@ export default function Register(): React.ReactElement {
           <Button
             type="button"
             className="!text-sm my-2 !bg-lt-100 !text-black w-full !rounded-input-radius"
-            _hover={{ boxShadow: "base" }}
+            boxShadow={"base"}
+            _hover={{ boxShadow: "lg" }}
             size={"lg"}
             onClick={() => navigate("/auth/login")}
           >

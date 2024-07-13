@@ -4,20 +4,20 @@ import FormComponent from "./FormComponent";
 
 export default function Login(): React.ReactElement {
   const navigate = useNavigate();
-  const inputs: Array<{ pl: string; value: string }> = [
-    { pl: "Email", value: "" },
-    { pl: "Password", value: "" },
+  const inputs: Array<{ pl: string; value: string; type: string }> = [
+    { pl: "Email", value: "", type: "mail" },
+    { pl: "Password", value: "", type: "password" },
   ];
   return (
     <div className="auth-form-login max-w-[700px] w-80">
       <FormComponent inputs={inputs}>
-        <h1 className="mb-4 font-bold text-center">Sign In to Re:Read</h1>
+        <h1 className="mb-4 font-extrabold text-center">Sign In to Re:Read</h1>
       </FormComponent>
       <div
         id="auth-footer"
         className=" flex flex-col justify-center items-center mt-1"
       >
-        <NavLink className="text-xs " to={"/auth/sign-up"}>
+        <NavLink className="text-xs " to={"#"}>
           Forgot your password?
         </NavLink>
         <div
@@ -29,8 +29,9 @@ export default function Login(): React.ReactElement {
           </p>
           <Button
             type="button"
-            className="!text-sm my-2 !bg-lt-100 !text-black w-full !rounded-input-radius"
-            _hover={{ boxShadow: "base" }}
+            className="!font-bold !text-sm my-2 !bg-lt-100 !text-black w-full !rounded-input-radius"
+            boxShadow={"base"}
+            _hover={{ boxShadow: "lg" }}
             size={"lg"}
             onClick={() => navigate("/auth/register")}
           >
