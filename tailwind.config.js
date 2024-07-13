@@ -22,9 +22,15 @@ export default {
       lw: {
         100: "#8A8A8A",
         200: "#6A6A6A",
+        300: "#E9E5DB",
+        400: "#B6B19E37",
       },
     },
-    extend: {},
+    extend: {
+      borderRadius: {
+        "input-radius": "2px",
+      },
+    },
   },
   plugins: [],
 };

@@ -32,12 +32,11 @@ html {
     margin: 0;
 }
 #root {
-    min-height: inherit;
+    min-height: 100dvh;
     display: flex;
 }
 
 .main-container {
-    height: inherit;
     flex: 1;
     display: flex;
 }

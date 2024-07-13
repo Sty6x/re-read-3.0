@@ -9,9 +9,8 @@ export default function Auth(): React.ReactElement {
     if (!userTest) {
       navigate("login");
       console.log("redirect");
-      return;
     }
-  });
+  }, []);
   return (
     <main className="main-container justify-center items-center text-3xl bg-light text text-dk-100">
       <Outlet context={{ authForm: { formData, setFormData } }} />
