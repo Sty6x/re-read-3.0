@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 :root {
+    --error-color: #ff4a4a;
+    --valid-color: #34bf85;
+
     line-height: 1.5;
     font-weight: 400;
 

@@ -1,18 +1,27 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import FormComponent from "./FormComponent";
 import { Button } from "@chakra-ui/react";
 
 export default function Register(): React.ReactElement {
-  const inputs: Array<{ pl: string; value: string; type: string }> = [
-    { pl: "Email", value: "", type: "mail" },
-    { pl: "Password", value: "", type: "password" },
-    { pl: "Confirm Password", value: "", type: "password" },
-  ];
+  const inputs: Array<{ pl: string; value: string; type: string; id: string }> =
+    [
+      { pl: "Email", value: "", type: "email", id: "email" },
+      { pl: "Password", value: "", type: "password", id: "password" },
+      {
+        pl: "Confirm Password",
+        value: "",
+        type: "password",
+        id: "confPassword",
+      },
+    ];
   const navigate = useNavigate();
   return (
     <div className="auth-form-login max-w-[700px] w-80">
       <FormComponent inputs={inputs} buttonText={"Create account"}>
-        <h1 className="mb-4 font-extrabold text-center">Sign up to Re:Read</h1>
+        <div className="mb-4">
+          <h1 className=" font-extrabold text-center">Sign up to Re:Read</h1>
+          <span className="invalid-popup"></span>
+        </div>
       </FormComponent>
       <div
         id="auth-footer"

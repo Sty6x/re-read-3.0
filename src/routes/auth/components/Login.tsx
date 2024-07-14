@@ -4,14 +4,20 @@ import FormComponent from "./FormComponent";
 
 export default function Login(): React.ReactElement {
   const navigate = useNavigate();
-  const inputs: Array<{ pl: string; value: string; type: string }> = [
-    { pl: "Email", value: "", type: "mail" },
-    { pl: "Password", value: "", type: "password" },
-  ];
+  const inputs: Array<{ pl: string; value: string; type: string; id: string }> =
+    [
+      { pl: "Email", value: "", type: "email", id: "email" },
+      { pl: "Password", value: "", type: "password", id: "password" },
+    ];
   return (
     <div className="auth-form-login max-w-[700px] w-80">
       <FormComponent inputs={inputs}>
-        <h1 className="mb-4 font-extrabold text-center">Sign In to Re:Read</h1>
+        <div className="mb-4">
+          <h1 className="mb-4 font-extrabold text-center">
+            Sign in to Re:Read
+          </h1>
+          <span className="invalid-popup"></span>
+        </div>
       </FormComponent>
       <div
         id="auth-footer"
