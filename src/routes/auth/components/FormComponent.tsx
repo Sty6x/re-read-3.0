@@ -1,13 +1,11 @@
 import { Stack, Button } from "@chakra-ui/react";
 import FormInput from "./Input";
-import { FormEvent, useEffect, useState } from "react";
-import checkEmailValidity from "../../../utils/validation/checkEmailValidity";
+import { FormEvent } from "react";
 import {
+  checkEmailValidity,
   checkPasswordConfirmationValidity,
   checkPasswordValidity,
-  isTheSame,
-} from "../../../utils/validation/checkPasswordValidity";
-import globalStateInstance from "../../../utils/globalState";
+} from "../../../utils/validation/authInputValidation";
 
 export default function FormComponent({
   children,
@@ -18,9 +16,6 @@ export default function FormComponent({
   inputs: Array<{ pl: string; value: string; type: string; id: string }>;
   children: React.ReactElement;
 }): React.ReactElement {
-  const [password, setPassword] = useState("");
-  const [confPassword, setConfPassword] = useState("");
-  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   //const { form } = useOutletContext<{
   //  form: {
   //    formData: { [key: string]: string; name: string };
@@ -32,16 +27,15 @@ export default function FormComponent({
 
   function inputOnChangeHandler(e: FormEvent<HTMLInputElement>) {
     const target = e.currentTarget;
-    if (target.id === "password") setPassword((_) => target.value);
-    if (target.id === "confPassword") setConfPassword((_) => target.value);
+    if (location.pathname.includes("/register")) {
+      if (target.id === "password" || target.id === "confPassword") checkPasswordConfirmationValidity()
+      if (target.id === "email") checkEmailValidity();
+      return
+    }
     if (target.id === "password") checkPasswordValidity();
     if (target.id === "email") checkEmailValidity();
   }
 
-  useEffect(() => {
-    if (password === "" || confPassword == "") return;
-    checkPasswordConfirmationValidity(isTheSame(password, confPassword))
-  }, [confPassword, password]);
 
   return (
     <form
@@ -49,13 +43,6 @@ export default function FormComponent({
       onSubmit={(e: FormEvent) => {
         const form = e.currentTarget;
         e.preventDefault();
-        if (!isFormValid) {
-          const formValidity = globalStateInstance.get<{ message: string }>(
-            "error-input",
-          );
-          console.log(formValidity.message);
-          return;
-        }
         console.log(form);
       }}
     >
