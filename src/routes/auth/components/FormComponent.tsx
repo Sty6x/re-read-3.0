@@ -1,12 +1,14 @@
 import { Stack, Button } from "@chakra-ui/react";
 import { useOutletContext } from "react-router-dom";
 import FormInput from "./Input";
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useState } from "react";
 import checkEmailValidity from "../../../utils/validation/checkEmailValidity";
 import {
+  checkPasswordConfirmationValidity,
   checkPasswordValidity,
   isTheSame,
 } from "../../../utils/validation/checkPasswordValidity";
+import globalStateInstance from "../../../utils/globalState";
 
 export default function FormComponent({
   children,
@@ -19,6 +21,7 @@ export default function FormComponent({
 }): React.ReactElement {
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const { form } = useOutletContext<{
     form: {
       formData: { [key: string]: string; name: string };
@@ -30,19 +33,39 @@ export default function FormComponent({
     const target = e.currentTarget;
     if (target.id === "password") setPassword((_) => target.value);
     if (target.id === "confPassword") setConfPassword((_) => target.value);
-    if (target.id === "email") checkEmailValidity(target);
+    if (target.id === "email") {
+      setIsFormValid(checkEmailValidity(target));
+    }
   }
 
   useEffect(() => {
+    // does not check when confPassword input is blank in login route
+    if (location.pathname.includes("/login")) {
+      if (password === "") return;
+      setIsFormValid(checkPasswordValidity());
+      return;
+    }
+
     if (password === "" || confPassword == "") return;
-    checkPasswordValidity(isTheSame(password, confPassword));
+    setIsFormValid(
+      checkPasswordConfirmationValidity(isTheSame(password, confPassword)),
+    );
   }, [confPassword, password]);
 
   return (
     <form
-      onSubmit={(e: any) => {
-        console.log(e);
+      noValidate
+      onSubmit={(e: FormEvent) => {
+        const form = e.currentTarget;
         e.preventDefault();
+        if (!isFormValid) {
+          const formValidity = globalStateInstance.get<{ message: string }>(
+            "error-input",
+          );
+          console.log(formValidity.message);
+          return;
+        }
+        console.log(form);
       }}
     >
       {children}

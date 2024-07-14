@@ -13,9 +13,7 @@ export default function Login(): React.ReactElement {
     <div className="auth-form-login max-w-[700px] w-80">
       <FormComponent inputs={inputs}>
         <div className="mb-4">
-          <h1 className="mb-4 font-extrabold text-center">
-            Sign in to Re:Read
-          </h1>
+          <h1 className="font-extrabold text-center">Sign in to Re:Read</h1>
           <span className="invalid-popup"></span>
         </div>
       </FormComponent>

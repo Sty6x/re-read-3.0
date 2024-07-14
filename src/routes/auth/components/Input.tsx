@@ -1,5 +1,5 @@
 import { Input } from "@chakra-ui/react";
-import { KeyboardEvent } from "react";
+import { KeyboardEvent, useEffect, useRef } from "react";
 export default function FormInput({
   pl,
   value,
@@ -13,8 +13,19 @@ export default function FormInput({
   inputHandler: (e: KeyboardEvent<HTMLInputElement>) => void;
   id: string;
 }): React.ReactElement {
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const input = inputRef.current;
+    console.log(input);
+    if (input?.type === "password") {
+      input.minLength = 8;
+      input.maxLength = 16;
+    }
+  }, []);
+
   return (
     <Input
+      ref={inputRef}
       id={id}
       onKeyUp={inputHandler}
       placeholder={pl}
