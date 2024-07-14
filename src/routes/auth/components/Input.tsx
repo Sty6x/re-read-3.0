@@ -27,7 +27,7 @@ export default function FormInput({
     <Input
       ref={inputRef}
       id={id}
-      onKeyUp={inputHandler}
+      onChange={inputHandler}
       placeholder={pl}
       focusBorderColor="gray.700"
       required

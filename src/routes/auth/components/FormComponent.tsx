@@ -22,30 +22,27 @@ export default function FormComponent({
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
-  const { form } = useOutletContext<{
-    form: {
-      formData: { [key: string]: string; name: string };
-      setFormData: React.Dispatch<React.SetStateAction<string>>;
-    };
-  }>();
+  //const { form } = useOutletContext<{
+  //  form: {
+  //    formData: { [key: string]: string; name: string };
+  //    setFormData: React.Dispatch<React.SetStateAction<string>>;
+  //  };
+  //}>();
+  //
 
-  function keyUpHandler(e: KeyboardEvent<HTMLInputElement>) {
+
+  function inputOnChangeHandler(e: HTMLInputElemen) {
     const target = e.currentTarget;
-    if (target.id === "password") setPassword((_) => target.value);
-    if (target.id === "confPassword") setConfPassword((_) => target.value);
-    if (target.id === "email") {
-      setIsFormValid(checkEmailValidity(target));
+    if (location.pathname.includes("/register")) {
+      if (target.id === "password") setPassword((_) => target.value);
+      if (target.id === "confPassword") setConfPassword((_) => target.value);
+      return;
     }
+    if (target.id === "password") checkPasswordValidity();
+    if (target.id === "email") checkEmailValidity();
   }
 
   useEffect(() => {
-    // does not check when confPassword input is blank in login route
-    if (location.pathname.includes("/login")) {
-      if (password === "") return;
-      setIsFormValid(checkPasswordValidity());
-      return;
-    }
-
     if (password === "" || confPassword == "") return;
     setIsFormValid(
       checkPasswordConfirmationValidity(isTheSame(password, confPassword)),
@@ -73,7 +70,7 @@ export default function FormComponent({
         {inputs.map((input, i) => (
           <FormInput
             id={input.id}
-            inputHandler={keyUpHandler}
+            inputHandler={inputOnChangeHandler}
             key={i}
             pl={input.pl}
             value={input.value}

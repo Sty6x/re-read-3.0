@@ -1,7 +1,8 @@
 import globalStateInstance from "../globalState";
 import displayMessage from "./displayMessage";
 
-function checkEmailValidity(emailInput: HTMLInputElement): boolean {
+function checkEmailValidity(): boolean {
+  const emailInput = document.getElementById("email") as HTMLInputElement;
   let validity: { message: string; isValid: boolean } = {
     message: "",
     isValid: false,
