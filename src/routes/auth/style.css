@@ -1,15 +1,15 @@
 .invalid-popup {
-    font-size: 0.6rem;
-    margin: 0;
-    padding: 0;
-    line-height: 1rem;
-    color: var(--error-color);
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+  line-height: 1rem;
+  color: var(--error-color);
 }
 
 .invalid-input {
-    border: 1px solid var(--error-color) !important;
+  border: 1px solid var(--error-color) !important;
 }
 
 .valid-input {
-    border: 1px solid var(--valid-color) !important;
+  border: 1px solid var(--valid-color) !important;
 }
