@@ -34,6 +34,7 @@ export default function FormComponent({
   }
 
   useEffect(() => {
+    if (password === "" || confPassword == "") return;
     checkPasswordValidity(isTheSame(password, confPassword));
   }, [confPassword, password]);
 
