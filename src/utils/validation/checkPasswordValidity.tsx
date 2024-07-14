@@ -6,11 +6,9 @@ function isTheSame(password: string, conf: string): boolean {
 
 function checkPasswordValidity(): boolean {
   const target = document.getElementById("password") as HTMLInputElement;
-  const validity = { message: "", isValid: false };
-  if (target.validity.tooLong) {
-    validity.message = "Password is too long.";
-  } else if (target.validity.tooShort) {
-    validity.message = "Password is too short.";
+  const validity = { message: "", isValid: false, value: target.value };
+  if (target.validity.valueMissing) {
+    validity.message = "Please input a password.";
   } else {
     validity.isValid = true;
     validity.message = "";
@@ -23,13 +21,15 @@ function checkPasswordValidity(): boolean {
 
 function checkPasswordConfirmationValidity(isSame: boolean): boolean {
   const target = document.getElementById("password") as HTMLInputElement;
-  const validity = { message: "", isValid: false };
+  const validity = { message: "", isValid: false, value: target.value };
   if (target.validity.tooLong) {
     validity.message = "Password is too long.";
   } else if (target.validity.tooShort) {
     validity.message = "Password is too short.";
   } else if (!isSame) {
     validity.message = "Password does not match.";
+  } else if (target.validity.valueMissing) {
+    validity.message = "Please input a password.";
   } else {
     validity.isValid = true;
     validity.message = "";

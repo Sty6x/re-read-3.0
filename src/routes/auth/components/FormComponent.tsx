@@ -1,7 +1,6 @@
 import { Stack, Button } from "@chakra-ui/react";
-import { useOutletContext } from "react-router-dom";
 import FormInput from "./Input";
-import { FormEvent, KeyboardEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import checkEmailValidity from "../../../utils/validation/checkEmailValidity";
 import {
   checkPasswordConfirmationValidity,
@@ -31,22 +30,17 @@ export default function FormComponent({
   //
 
 
-  function inputOnChangeHandler(e: HTMLInputElemen) {
+  function inputOnChangeHandler(e: FormEvent<HTMLInputElement>) {
     const target = e.currentTarget;
-    if (location.pathname.includes("/register")) {
-      if (target.id === "password") setPassword((_) => target.value);
-      if (target.id === "confPassword") setConfPassword((_) => target.value);
-      return;
-    }
+    if (target.id === "password") setPassword((_) => target.value);
+    if (target.id === "confPassword") setConfPassword((_) => target.value);
     if (target.id === "password") checkPasswordValidity();
     if (target.id === "email") checkEmailValidity();
   }
 
   useEffect(() => {
     if (password === "" || confPassword == "") return;
-    setIsFormValid(
-      checkPasswordConfirmationValidity(isTheSame(password, confPassword)),
-    );
+    checkPasswordConfirmationValidity(isTheSame(password, confPassword))
   }, [confPassword, password]);
 
   return (
