@@ -3,23 +3,19 @@ import displayMessage from "./displayMessage";
 
 function checkEmailValidity(): boolean {
   const emailInput = document.getElementById("email") as HTMLInputElement;
-  let validity: { message: string; isValid: boolean, value: string } = {
+  let validity: { message: string; isValid: boolean; value: string } = {
     message: "",
     isValid: false,
-    value: emailInput.value
+    value: emailInput.value,
   };
   if (emailInput.validity.typeMismatch) {
-    validity.message = "*Please enter a valid email address.";
+    validity.message = "Please enter a valid email address.";
   } else if (emailInput.value !== "" && !emailInput.validity.typeMismatch) {
     validity = { ...validity, message: "", isValid: true };
   }
   globalStateInstance.set("error-input", { message: validity.message });
   displayMessage(emailInput, validity);
   return validity.isValid;
-}
-
-function isTheSame(password: string, conf: string): boolean {
-  return password === conf;
 }
 
 function checkPasswordValidity(): boolean {
@@ -39,9 +35,9 @@ function checkPasswordValidity(): boolean {
 
 function checkPasswordConfirmationValidity(): boolean {
   const passwordInput = document.getElementById("password") as HTMLInputElement;
-  const passwordConfInput = document.getElementById("confPassword") as HTMLInputElement;
-
-  console.log({ passwordInput: passwordInput.value, passwordConfInput: passwordConfInput.value })
+  const passwordConfInput = document.getElementById(
+    "confPassword",
+  ) as HTMLInputElement;
   const validity = { message: "", isValid: false, value: passwordInput.value };
   if (passwordInput.validity.tooLong) {
     validity.message = "Password is too long.";
@@ -61,4 +57,8 @@ function checkPasswordConfirmationValidity(): boolean {
   return validity.isValid;
 }
 
-export { checkPasswordConfirmationValidity, checkPasswordValidity, checkEmailValidity };
+export {
+  checkPasswordConfirmationValidity,
+  checkPasswordValidity,
+  checkEmailValidity,
+};
