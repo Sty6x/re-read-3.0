@@ -1,10 +1,29 @@
+@keyframes invalid-popup{
+ from {
+  opacity: 0;
+ }
+ to{
+  opacity: 1;
+  transform: translateX(0px);
+ }
+}
 .invalid-popup {
+  transform: translateX(-20px);
   font-size: 1rem;
   margin: 0;
   padding: 0;
   line-height: 1rem;
   color: var(--error-color);
 }
+
+.invalid-popup.inactive-err-popup {
+  display: none;
+}
+.invalid-popup.active-err-popup {
+  display: inline-block;
+  animation: invalid-popup ease-in-out 300ms forwards;
+}
+
 
 .invalid-input {
   border: 1px solid var(--error-color) !important;
@@ -37,7 +56,7 @@
 }
 
 .auth-submit-invalid{
-  animation: submit-invalid ease-in-out 700ms forwards;
+  animation: submit-invalid ease-out 450ms forwards;
   background-color: #ED3737;
   /*transition: all 150ms ease-in;*/
 }
