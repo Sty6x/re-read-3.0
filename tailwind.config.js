@@ -5,6 +5,7 @@ export default {
     colors: {
       black: "#2B2B2B",
       light: "#FDF9EF",
+      error: "#ED3737",
       accent: {
         100: "#F8EED4",
       },

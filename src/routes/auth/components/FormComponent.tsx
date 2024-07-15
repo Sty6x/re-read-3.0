@@ -1,6 +1,6 @@
 import { Stack, Button } from "@chakra-ui/react";
 import FormInput from "./Input";
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import {
   checkEmailValidity,
   checkPasswordConfirmationValidity,
@@ -16,6 +16,7 @@ export default function FormComponent({
   inputs: Array<{ pl: string; value: string; type: string; id: string }>;
   children: React.ReactElement;
 }): React.ReactElement {
+  const [isValidSubmit, setIsValidSubmit] = useState<boolean>(false);
   //const { form } = useOutletContext<{
   //  form: {
   //    formData: { [key: string]: string; name: string };
@@ -36,25 +37,31 @@ export default function FormComponent({
     if (target.id === "email") checkEmailValidity();
   }
 
+  function evaluateValidityOnSubmit(): boolean {
+    if (!location.pathname.includes("/register")) {
+      if (checkEmailValidity() && checkPasswordValidity()) {
+        console.log("submit")
+        return true
+      }
+      console.log("invalid")
+      return false;
+    }
+    if (checkEmailValidity() && checkPasswordValidity()
+      && checkPasswordConfirmationValidity()) {
+      console.log("submit")
+      return true
+    }
+    return false;
+
+  }
 
   return (
     <form
       noValidate
       onSubmit={(e: FormEvent) => {
         //const form = e.currentTarget;
+        setIsValidSubmit(evaluateValidityOnSubmit());
         e.preventDefault();
-        if (location.pathname.includes("/register")) {
-          if (checkEmailValidity() && checkPasswordValidity() && checkPasswordConfirmationValidity()) {
-            console.log("submit")
-            return
-          }
-          console.log("invalid")
-          return
-        }
-
-        if (checkEmailValidity() && checkPasswordValidity()) {
-          console.log("submit")
-        }
       }}
     >
       {children}
@@ -71,7 +78,7 @@ export default function FormComponent({
         ))}
         <Button
           type="submit"
-          className="!font-bold mb-2 !text-sm !rounded-input-radius !bg-black !text-lt-200"
+          className={`${isValidSubmit ? "submit-invalid" : ""}  !font-bold mb-2 !text-sm !rounded-input-radius !bg-black !text-lt-200`}
           size={"lg"}
           boxShadow={"base"}
           _hover={{ boxShadow: "lg" }}
@@ -79,6 +86,6 @@ export default function FormComponent({
           {buttonText}
         </Button>
       </Stack>
-    </form>
+    </form >
   );
 }
