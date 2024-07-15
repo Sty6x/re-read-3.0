@@ -41,9 +41,20 @@ export default function FormComponent({
     <form
       noValidate
       onSubmit={(e: FormEvent) => {
-        const form = e.currentTarget;
+        //const form = e.currentTarget;
         e.preventDefault();
-        console.log(form);
+        if (location.pathname.includes("/register")) {
+          if (checkEmailValidity() && checkPasswordValidity() && checkPasswordConfirmationValidity()) {
+            console.log("submit")
+            return
+          }
+          console.log("invalid")
+          return
+        }
+
+        if (checkEmailValidity() && checkPasswordValidity()) {
+          console.log("submit")
+        }
       }}
     >
       {children}

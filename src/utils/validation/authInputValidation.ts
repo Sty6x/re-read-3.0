@@ -26,7 +26,6 @@ function checkPasswordValidity(): boolean {
   } else {
     validity.isValid = true;
     validity.message = "";
-    console.log("Proceed");
   }
   globalStateInstance.set("error-input", { message: validity.message });
   displayMessage(target, validity);
