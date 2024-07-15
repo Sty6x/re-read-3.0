@@ -10,6 +10,8 @@ function checkEmailValidity(): boolean {
   };
   if (emailInput.validity.typeMismatch) {
     validity.message = "Please enter a valid email address.";
+  } else if (emailInput.validity.valueMissing) {
+    validity.message = "Enter your email address.";
   } else if (emailInput.value !== "" && !emailInput.validity.typeMismatch) {
     validity = { ...validity, message: "", isValid: true };
   }
@@ -23,6 +25,8 @@ function checkPasswordValidity(): boolean {
   const validity = { message: "", isValid: false, value: target.value };
   if (target.validity.valueMissing) {
     validity.message = "Please input a password.";
+  } else if (target.validity.tooShort) {
+    validity.message = "Hmm password is too short.";
   } else {
     validity.isValid = true;
     validity.message = "";

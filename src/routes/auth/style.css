@@ -13,3 +13,40 @@
 .valid-input {
   border: 1px solid var(--valid-color) !important;
 }
+
+
+@keyframes submit-invalid{
+  from {
+    transform: translateX(-0px);
+  }
+  25%{
+    transform: translateX(10px);
+  }
+
+  50%{
+    transform: translateX(-10px);
+  }
+
+  75%{
+    transform: translateX(10px);
+  }
+
+  to{
+    transform: translateX(0px);
+  }
+}
+
+.auth-submit-invalid{
+  animation: submit-invalid ease-in-out 700ms forwards;
+  background-color: #ED3737;
+  /*transition: all 150ms ease-in;*/
+}
+
+.auth-submit-default{
+  /*transition: all 150ms ease-in;*/
+
+}
+
+.auth-submit-valid{
+  background-color: green !important;
+}

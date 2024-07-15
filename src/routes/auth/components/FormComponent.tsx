@@ -1,6 +1,6 @@
 import { Stack, Button } from "@chakra-ui/react";
 import FormInput from "./Input";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import {
   checkEmailValidity,
   checkPasswordConfirmationValidity,
@@ -16,7 +16,7 @@ export default function FormComponent({
   inputs: Array<{ pl: string; value: string; type: string; id: string }>;
   children: React.ReactElement;
 }): React.ReactElement {
-  const [isValidSubmit, setIsValidSubmit] = useState<boolean>(false);
+  const [isValidSubmit, setIsValidSubmit] = useState<boolean>(true); // to set inital style
   //const { form } = useOutletContext<{
   //  form: {
   //    formData: { [key: string]: string; name: string };
@@ -33,8 +33,8 @@ export default function FormComponent({
       if (target.id === "email") checkEmailValidity();
       return
     }
-    if (target.id === "password") checkPasswordValidity();
-    if (target.id === "email") checkEmailValidity();
+    //if (target.id === "password") checkPasswordValidity();
+    //if (target.id === "email") checkEmailValidity();
   }
 
   function evaluateValidityOnSubmit(): boolean {
@@ -42,9 +42,10 @@ export default function FormComponent({
       if (checkEmailValidity() && checkPasswordValidity()) {
         console.log("submit")
         return true
+      } else {
+        console.log("invalid")
+        return false;
       }
-      console.log("invalid")
-      return false;
     }
     if (checkEmailValidity() && checkPasswordValidity()
       && checkPasswordConfirmationValidity()) {
@@ -52,8 +53,26 @@ export default function FormComponent({
       return true
     }
     return false;
+  }
+
+  function animateButton() {
+    const submitBtn = document.getElementById("auth-submit") as HTMLButtonElement;
+    submitBtn.textContent = "Check your creds";
+    setTimeout(() => {
+      submitBtn.textContent = "Sign in";
+      submitBtn.style.backgroundColor = "#33333";
+      submitBtn.classList.remove("auth-submit-invalid");
+      setIsValidSubmit(true);
+    }, 800)
+
 
   }
+
+
+  useEffect(() => {
+    if (!isValidSubmit)
+      animateButton();
+  }, [isValidSubmit])
 
   return (
     <form
@@ -78,7 +97,8 @@ export default function FormComponent({
         ))}
         <Button
           type="submit"
-          className={`${isValidSubmit ? "submit-invalid" : ""}  !font-bold mb-2 !text-sm !rounded-input-radius !bg-black !text-lt-200`}
+          id="auth-submit"
+          className={`${!isValidSubmit ? "auth-submit-invalid" : ""} auth-submit-default  !font-bold mb-2 !text-sm !rounded-input-radius !bg-black !text-lt-200`}
           size={"lg"}
           boxShadow={"base"}
           _hover={{ boxShadow: "lg" }}
