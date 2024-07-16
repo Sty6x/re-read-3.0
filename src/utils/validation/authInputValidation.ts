@@ -16,7 +16,7 @@ function checkEmailValidity(): boolean {
     validity = { ...validity, message: "", isValid: true };
   }
   globalStateInstance.set("error-input", { message: validity.message });
-  displayMessage(emailInput, validity);
+  displayMessage(validity, emailInput);
   return validity.isValid;
 }
 
@@ -32,7 +32,7 @@ function checkPasswordValidity(): boolean {
     validity.message = "";
   }
   globalStateInstance.set("error-input", { message: validity.message });
-  displayMessage(target, validity);
+  displayMessage(validity, target);
   return validity.isValid;
 }
 
@@ -56,7 +56,7 @@ function checkPasswordConfirmationValidity(): boolean {
   }
 
   globalStateInstance.set("error-input", { message: validity.message });
-  displayMessage(passwordInput, validity);
+  displayMessage(validity, passwordInput);
   return validity.isValid;
 }
 

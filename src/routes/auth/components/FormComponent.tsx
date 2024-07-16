@@ -1,4 +1,4 @@
-import { Stack, Button } from "@chakra-ui/react";
+import { Stack, Button, Spinner } from "@chakra-ui/react";
 import FormInput from "./Input";
 import { FormEvent, useEffect, useState } from "react";
 import {
@@ -26,21 +26,25 @@ export default function FormComponent({
   //
 
 
-  function inputOnChangeHandler(e: FormEvent<HTMLInputElement>) {
-    const target = e.currentTarget;
-    if (location.pathname.includes("/register")) {
-      if (target.id === "password" || target.id === "confPassword") checkPasswordConfirmationValidity()
-      if (target.id === "email") checkEmailValidity();
-      return
-    }
-    //if (target.id === "password") checkPasswordValidity();
-    //if (target.id === "email") checkEmailValidity();
+
+  function animateErrorButton(errorMessage: string) {
+    const submitBtn = document.getElementById("auth-submit") as HTMLButtonElement;
+    const tmp = submitBtn.textContent;
+    submitBtn.textContent = errorMessage;
+    setTimeout(() => {
+      submitBtn.textContent = tmp;
+      submitBtn.style.backgroundColor = "#33333";
+      submitBtn.classList.remove("auth-submit-invalid");
+      setIsValidSubmit(true);
+    }, 800)
   }
 
+
+  // VALIDATES ON SUMBIT FOR SIGN IN AND SIGN UP
   function evaluateValidityOnSubmit(): boolean {
     if (!location.pathname.includes("/register")) {
       if (checkEmailValidity() && checkPasswordValidity()) {
-        console.log("submit")
+        console.log("valid")
         return true
       } else {
         console.log("invalid")
@@ -49,39 +53,62 @@ export default function FormComponent({
     }
     if (checkEmailValidity() && checkPasswordValidity()
       && checkPasswordConfirmationValidity()) {
-      console.log("submit")
+      console.log("valid")
       return true
     }
+    console.log("invalid")
     return false;
   }
 
-  function animateButton() {
-    const submitBtn = document.getElementById("auth-submit") as HTMLButtonElement;
-    submitBtn.textContent = "Check your creds";
+  // VALIDATES INPUTS FOR REGISTER ROUTE
+  // DONT NEED TO VALIDATE INPUTS FOR SIGN IN
+  function inputOnChangeHandler(e: FormEvent<HTMLInputElement>) {
+    const target = e.currentTarget;
+    if (location.pathname.includes("/register")) {
+      if (target.id === "password" || target.id === "confPassword") checkPasswordConfirmationValidity()
+      if (target.id === "email") checkEmailValidity();
+      return
+    }
+  }
+
+  // VALIDATE ON SUBMIT
+  async function submitUser() {
+    let valid: boolean = true;
     setTimeout(() => {
-      submitBtn.textContent = "Sign in";
-      submitBtn.style.backgroundColor = "#33333";
-      submitBtn.classList.remove("auth-submit-invalid");
-      setIsValidSubmit(true);
-    }, 800)
+    }, 600);
+    if (!valid) {
+      throw new Error("Something went wrong");
+    }
+    console.log("Status Code 202 form sent successfully.")
+  }
 
 
+  async function submitHandler(e: FormEvent) {
+    const form = e.currentTarget;
+    const isValidSubmit = evaluateValidityOnSubmit();
+    e.preventDefault();
+    if (isValidSubmit) {
+      try {
+        await submitUser();
+        console.log("sent")
+      } catch (err: any) {
+        console.log(err.message)
+      }
+    }
   }
 
 
   useEffect(() => {
-    if (!isValidSubmit)
-      animateButton();
+    if (!isValidSubmit) {
+      animateErrorButton("Check your credentials.");
+      return;
+    }
   }, [isValidSubmit])
 
   return (
     <form
       noValidate
-      onSubmit={(e: FormEvent) => {
-        //const form = e.currentTarget;
-        setIsValidSubmit(evaluateValidityOnSubmit());
-        e.preventDefault();
-      }}
+      onSubmit={submitHandler}
     >
       {children}
       <Stack spacing={4}>
@@ -96,15 +123,15 @@ export default function FormComponent({
           />
         ))}
         <Button
+          spinnerPlacement={`${}`}
           type="submit"
           id="auth-submit"
           className={`${!isValidSubmit ? "auth-submit-invalid" : ""} auth-submit-default  !font-bold mb-2 !text-sm !rounded-input-radius !bg-black !text-lt-200`}
           size={"lg"}
           boxShadow={"base"}
           _hover={{ boxShadow: "lg" }}
-        >
-          {buttonText}
-        </Button>
+        >{buttonText}</Button>
+
       </Stack>
     </form >
   );
