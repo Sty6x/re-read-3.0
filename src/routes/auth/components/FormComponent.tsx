@@ -7,6 +7,7 @@ import {
   checkPasswordValidity,
 } from "../../../utils/validation/authInputValidation";
 import globalStateInstance from "../../../utils/globalState";
+import displayMessage from "../../../utils/validation/displayMessage";
 
 export default function FormComponent({
   children,
@@ -75,9 +76,42 @@ export default function FormComponent({
 
   async function submitUser(formData: { email: string; password: string }) {
     // evaluate route if login or register
-    console.log(formData);
-    const newUser = globalStateInstance.set(formData.email, { ...formData })
-    console.log(newUser.value)
+    const userDatabase = globalStateInstance.get<Array<{ email: string; password: string }>>("users") || globalStateInstance.set<Array<{ email: string; password: string }>>("users", []);
+    console.log(userDatabase);
+
+    // login send POST OR GET??
+    if (location.pathname.includes("/login")) {
+      try {
+        // this query happens on the server
+        const user = userDatabase.find(u => u.email === formData.email)
+        // what is sent to the client from server on register login handler;
+        const { message, userData } = { message: "Email does not exist.", userData: user };
+        // get error from server if a user does not exist
+        if (userData === undefined) {
+          throw new Error(message)
+        }
+      } catch (err: any) {
+        displayMessage({ isValid: false, message: err.message, value: "" });
+        console.log("Log: User does not exist");
+      }
+      return;
+    }
+
+    try {
+      // register send POST
+      // this query happens on the server
+      const user = userDatabase.find(u => u.email === formData.email)
+      // what is sent to the client from server on register route handler;
+      const { message, userData } = { message: "Email already exists.", userData: user };
+      if (userData !== undefined) {
+        throw new Error(message);
+      }
+      const newUser = globalStateInstance.set("users", [...userDatabase, formData])
+      console.log(newUser)
+    } catch (err: any) {
+      displayMessage({ isValid: false, message: err.message, value: "" });
+    }
+
   }
 
 

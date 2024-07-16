@@ -7,11 +7,11 @@ class GlobalState {
   }
   set<T>(key: string, value: T) {
     this.states[key] = value;
-    return { key, value };
+    return value;
   }
-  get<T>(key?: string): T | { [key: string]: T } {
+  get<T>(key?: string): T {
     if (key === undefined) {
-      return this.states;
+      return this.states as T;
     }
     return this.states[key];
   }

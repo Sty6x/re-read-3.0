@@ -1,16 +1,16 @@
-@keyframes invalid-popup{
- from {
-  opacity: 0;
- }
- to{
-  opacity: 1;
-  transform: translateX(0px);
- }
+@keyframes invalid-popup {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
 }
 .invalid-popup {
   transform: translateX(-20px);
-  font-size: 1rem;
-  margin: 0;
+  font-size: 0.8rem;
+  margin: 1em 0em;
   padding: 0;
   line-height: 1rem;
   color: var(--error-color);
@@ -24,7 +24,6 @@
   animation: invalid-popup ease-in-out 300ms forwards;
 }
 
-
 .invalid-input {
   border: 1px solid var(--error-color) !important;
 }
@@ -33,39 +32,37 @@
   border: 1px solid var(--valid-color) !important;
 }
 
-
-@keyframes submit-invalid{
+@keyframes submit-invalid {
   from {
     transform: translateX(-0px);
   }
-  25%{
+  25% {
     transform: translateX(10px);
   }
 
-  50%{
+  50% {
     transform: translateX(-10px);
   }
 
-  75%{
+  75% {
     transform: translateX(10px);
   }
 
-  to{
+  to {
     transform: translateX(0px);
   }
 }
 
-.auth-submit-invalid{
+.auth-submit-invalid {
   animation: submit-invalid ease-out 450ms forwards;
-  background-color: #ED3737;
+  background-color: #ed3737;
   /*transition: all 150ms ease-in;*/
 }
 
-.auth-submit-default{
+.auth-submit-default {
   /*transition: all 150ms ease-in;*/
-
 }
 
-.auth-submit-valid{
+.auth-submit-valid {
   background-color: green !important;
 }
