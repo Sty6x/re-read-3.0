@@ -26,3 +26,6 @@ class GlobalState {
 
 const globalStateInstance = GlobalState.getInstance();
 export default globalStateInstance;
+
+// use this as a hook?
+// when setting deleting updating,

@@ -17,6 +17,7 @@ export default function FormComponent({
   children: React.ReactElement;
 }): React.ReactElement {
   const [isValidSubmit, setIsValidSubmit] = useState<boolean>(true); // to set inital style
+  const [isSubmiting, setIsSubmiting] = useState<boolean>(false); // to set inital style
   //const { form } = useOutletContext<{
   //  form: {
   //    formData: { [key: string]: string; name: string };
@@ -74,12 +75,6 @@ export default function FormComponent({
   // VALIDATE ON SUBMIT
   async function submitUser() {
     let valid: boolean = true;
-    setTimeout(() => {
-    }, 600);
-    if (!valid) {
-      throw new Error("Something went wrong");
-    }
-    console.log("Status Code 202 form sent successfully.")
   }
 
 
@@ -89,14 +84,23 @@ export default function FormComponent({
     e.preventDefault();
     if (isValidSubmit) {
       try {
-        await submitUser();
+        setIsSubmiting(true);
+        setTimeout(() => {
+          setIsSubmiting(false);
+        }, 2000);
+        //await submitUser();
         console.log("sent")
       } catch (err: any) {
         console.log(err.message)
+        setIsSubmiting(false);
       }
     }
   }
 
+
+  useEffect(() => {
+    console.log(isSubmiting)
+  }, [isSubmiting])
 
   useEffect(() => {
     if (!isValidSubmit) {
@@ -123,7 +127,7 @@ export default function FormComponent({
           />
         ))}
         <Button
-          spinnerPlacement={`${}`}
+          isLoading={isSubmiting}
           type="submit"
           id="auth-submit"
           className={`${!isValidSubmit ? "auth-submit-invalid" : ""} auth-submit-default  !font-bold mb-2 !text-sm !rounded-input-radius !bg-black !text-lt-200`}
