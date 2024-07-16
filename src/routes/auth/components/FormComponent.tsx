@@ -6,6 +6,7 @@ import {
   checkPasswordConfirmationValidity,
   checkPasswordValidity,
 } from "../../../utils/validation/authInputValidation";
+import globalStateInstance from "../../../utils/globalState";
 
 export default function FormComponent({
   children,
@@ -13,7 +14,7 @@ export default function FormComponent({
   buttonText = "Sign in",
 }: {
   buttonText?: string;
-  inputs: Array<{ pl: string; value: string; type: string; id: string }>;
+  inputs: Array<{ pl: string; value: string; type: string; id: string, name: string }>;
   children: React.ReactElement;
 }): React.ReactElement {
   const [isValidSubmit, setIsValidSubmit] = useState<boolean>(true); // to set inital style
@@ -72,20 +73,26 @@ export default function FormComponent({
     }
   }
 
-  // VALIDATE ON SUBMIT
-  async function submitUser() {
-    let valid: boolean = true;
+  async function submitUser(formData: { email: string; password: string }) {
+    // evaluate route if login or register
+    console.log(formData);
+    const newUser = globalStateInstance.set(formData.email, { ...formData })
+    console.log(newUser.value)
   }
 
 
   async function submitHandler(e: FormEvent) {
-    const form = e.currentTarget;
+    const form = e.currentTarget as HTMLFormElement;
     const isValidSubmit = evaluateValidityOnSubmit();
     e.preventDefault();
     if (isValidSubmit) {
       try {
         setIsSubmiting(true);
         setTimeout(() => {
+          const formData = new FormData(form);
+          console.log(formData.entries());
+          const data = Object.fromEntries(formData.entries())
+          submitUser(data as { email: string; password: string }); // SHHH
           setIsSubmiting(false);
         }, 2000);
         //await submitUser();
@@ -118,6 +125,7 @@ export default function FormComponent({
       <Stack spacing={4}>
         {inputs.map((input, i) => (
           <FormInput
+            name={input.name}
             id={input.id}
             inputHandler={inputOnChangeHandler}
             key={i}

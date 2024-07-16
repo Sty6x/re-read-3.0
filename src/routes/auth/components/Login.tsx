@@ -4,10 +4,10 @@ import FormComponent from "./FormComponent";
 
 export default function Login(): React.ReactElement {
   const navigate = useNavigate();
-  const inputs: Array<{ pl: string; value: string; type: string; id: string }> =
+  const inputs: Array<{ pl: string; value: string; type: string; id: string, name: string }> =
     [
-      { pl: "Email", value: "", type: "email", id: "email" },
-      { pl: "Password", value: "", type: "password", id: "password" },
+      { pl: "Email", value: "", type: "email", id: "email", name: "email" },
+      { pl: "Password", value: "", type: "password", id: "password", name: "password" },
     ];
   return (
     <div className="auth-form-login max-w-[700px] w-80">

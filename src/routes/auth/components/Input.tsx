@@ -2,11 +2,12 @@ import { Input } from "@chakra-ui/react";
 import { KeyboardEvent, useEffect, useRef } from "react";
 export default function FormInput({
   pl,
-  value,
+  name,
   type,
   inputHandler,
   id,
 }: {
+  name: string;
   pl: string;
   value: string;
   type: string;
@@ -26,6 +27,7 @@ export default function FormInput({
     <Input
       ref={inputRef}
       id={id}
+      name={name}
       onChange={inputHandler}
       placeholder={pl}
       focusBorderColor="gray.700"

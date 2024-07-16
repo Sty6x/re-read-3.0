@@ -3,15 +3,17 @@ import FormComponent from "./FormComponent";
 import { Button } from "@chakra-ui/react";
 
 export default function Register(): React.ReactElement {
-  const inputs: Array<{ pl: string; value: string; type: string; id: string }> =
+  const inputs: Array<{ pl: string; value: string; type: string; id: string, name: string }> =
     [
-      { pl: "Email", value: "", type: "email", id: "email" },
-      { pl: "Password", value: "", type: "password", id: "password" },
+
+      { pl: "Email", value: "", type: "email", id: "email", name: "email" },
+      { pl: "Password", value: "", type: "password", id: "password", name: "password" },
       {
         pl: "Confirm Password",
         value: "",
         type: "password",
         id: "confPassword",
+        name: "",
       },
     ];
   const navigate = useNavigate();
