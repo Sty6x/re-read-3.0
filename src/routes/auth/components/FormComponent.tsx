@@ -8,6 +8,9 @@ import {
 } from "../../../utils/validation/authInputValidation";
 import globalStateInstance from "../../../utils/globalState";
 import displayMessage from "../../../utils/validation/displayMessage";
+import { useNavigate } from "react-router-dom";
+import AuthClient from "../../../utils/api/auth";
+
 
 export default function FormComponent({
   children,
@@ -18,6 +21,7 @@ export default function FormComponent({
   inputs: Array<{ pl: string; value: string; type: string; id: string, name: string }>;
   children: React.ReactElement;
 }): React.ReactElement {
+  const navigate = useNavigate();
   const [isValidSubmit, setIsValidSubmit] = useState<boolean>(true); // to set inital style
   const [isSubmiting, setIsSubmiting] = useState<boolean>(false); // to set inital style
   //const { form } = useOutletContext<{
@@ -74,44 +78,41 @@ export default function FormComponent({
     }
   }
 
-  async function submitUser(formData: { email: string; password: string }) {
-    // evaluate route if login or register
-    const userDatabase = globalStateInstance.get<Array<{ email: string; password: string }>>("users") || globalStateInstance.set<Array<{ email: string; password: string }>>("users", []);
-    console.log(userDatabase);
+  type t_authResponse = {
+    message: string;
+    redirect: {
+      canNavigate: boolean;
+      route: string;
+    };
+    userData: any | undefined;
+  };
 
-    // login send POST OR GET??
-    if (location.pathname.includes("/login")) {
-      try {
-        // this query happens on the server
-        const user = userDatabase.find(u => u.email === formData.email)
-        // what is sent to the client from server on register login handler;
-        const { message, userData } = { message: "Email does not exist.", userData: user };
-        // get error from server if a user does not exist
-        if (userData === undefined) {
-          throw new Error(message)
-        }
-      } catch (err: any) {
-        displayMessage({ isValid: false, message: err.message, value: "" });
-        console.log("Log: User does not exist");
-      }
-      return;
-    }
 
+
+  // FIX THIS IT'S FUNCTIONAL BUT LOOKS DUMB.
+  // anonymous function does not have a this, so its this object is global object,
+  // instead of AuthClient.loginRequest() it is globalObject.loginRequest() so its undefined
+  async function onSubmitNavigator(authMethod: () => Promise<t_authResponse>) {
     try {
-      // register send POST
-      // this query happens on the server
-      const user = userDatabase.find(u => u.email === formData.email)
-      // what is sent to the client from server on register route handler;
-      const { message, userData } = { message: "Email already exists.", userData: user };
-      if (userData !== undefined) {
-        throw new Error(message);
+      const response = await authMethod();
+      console.log(response);
+      if (!response.redirect.canNavigate) {
+        throw new Error(response.message)
+        return;
       }
-      const newUser = globalStateInstance.set("users", [...userDatabase, formData])
-      console.log(newUser)
+      navigate(response.redirect.route as string);
     } catch (err: any) {
       displayMessage({ isValid: false, message: err.message, value: "" });
     }
+  }
 
+  async function sendAuth(formData: { email: string; password: string }) {
+    const Auth = new AuthClient(formData);
+    if (location.pathname.includes("/login")) {
+      await onSubmitNavigator(Auth.loginRequest.bind(Auth));
+      return
+    }
+    await onSubmitNavigator(Auth.loginRequest.bind(Auth));
   }
 
 
@@ -122,14 +123,11 @@ export default function FormComponent({
     if (isValidSubmit) {
       try {
         setIsSubmiting(true);
-        setTimeout(() => {
-          const formData = new FormData(form);
-          console.log(formData.entries());
-          const data = Object.fromEntries(formData.entries())
-          submitUser(data as { email: string; password: string }); // SHHH
-          setIsSubmiting(false);
-        }, 2000);
-        //await submitUser();
+        const formData = new FormData(form);
+        console.log(formData.entries());
+        const data = Object.fromEntries(formData.entries())
+        await sendAuth(data as { email: string; password: string }); // SHHH
+        setIsSubmiting(false);
         console.log("sent")
       } catch (err: any) {
         console.log(err.message)
