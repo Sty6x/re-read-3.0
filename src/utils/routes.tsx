@@ -7,10 +7,11 @@ import appLoader from "./loaders/app_loader/appLoader";
 
 const router = createBrowserRouter([
   {
+    // use this as a landing page about the web app?? I DONT KNOOOWWW
     path: "/",
-    loader: async () => {
-      return redirect("/auth");
-    },
+    loader: () => {
+      return redirect("/app")
+    }
   },
   {
     path: "/auth",

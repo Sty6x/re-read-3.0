@@ -1,9 +1,10 @@
 import { redirect } from "react-router-dom";
-import apiRoutes from "../../api/apiRoutes";
+import { ORIGIN_URL } from "../../api/apiRoutes";
 
 export default async () => {
+  const userID = localStorage.getItem("userID");
   try {
-    const request = await fetch(apiRoutes.resources.all, {
+    const request = await fetch(`${ORIGIN_URL}/app/${userID}/all`, {
       method: "GET",
       mode: "cors",
       credentials: "include",
@@ -14,7 +15,7 @@ export default async () => {
     if (toJson.sessionExpired) throw new Error(toJson.message);
     return toJson;
   } catch (err: any) {
-    console.log(err.message);
+    console.error(err.message);
     return redirect("/auth/login");
   }
 };
