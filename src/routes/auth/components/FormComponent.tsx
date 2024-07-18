@@ -108,9 +108,9 @@ export default function FormComponent({
 
   async function sendAuth(formData: { email: string; password: string }) {
     const Auth = new AuthClient(formData);
-    if (location.pathname.includes("/login")) {
-      await onSubmitNavigator(Auth.loginRequest.bind(Auth));
-      return
+    if (!location.pathname.includes("/login")) {
+      await onSubmitNavigator(Auth.registerRequest.bind(Auth));
+      return;
     }
     await onSubmitNavigator(Auth.loginRequest.bind(Auth));
   }
