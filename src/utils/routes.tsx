@@ -3,6 +3,7 @@ import Login from "../routes/auth/components/Login";
 import Register from "../routes/auth/components/Register";
 import App from "../routes/app/App";
 import Auth from "../routes/auth/Auth";
+import appLoader from "./loaders/app_loader/appLoader";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
   {
     path: "/app",
     element: <App />,
+    loader: appLoader
   },
 ]);
 
