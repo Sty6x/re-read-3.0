@@ -1,3 +1,4 @@
+import { localStorageManager } from "@chakra-ui/react";
 import apiRoutes from "./apiRoutes";
 
 type t_authResponse = {
@@ -70,6 +71,8 @@ class AuthClient {
           headers: { Accept: "application/json" },
         },
       );
+      console.log(response.userData);
+      localStorage.setItem("userID", response.userData._id);
       return response;
     } catch (err: any) {
       console.error(err.message);
