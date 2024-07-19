@@ -6,9 +6,8 @@ export default function Auth(): React.ReactElement {
   const navigate = useNavigate();
 
   async function checkExistingUser() {
-    const userID = localStorage.getItem("userID");
-    console.log(userID);
     try {
+      // to check if session cookie exists
       const request = await fetch(`${ORIGIN_URL}/app/`, {
         method: "GET",
         mode: "cors",
@@ -24,9 +23,7 @@ export default function Auth(): React.ReactElement {
   }
 
   useEffect(() => {
-    checkExistingUser().then(() => {
-      console.log("User is logged in.")
-    }).catch(() => console.log("User session expired or is Logged out."))
+    checkExistingUser()
   }, []);
   return (
     <main className="main-container justify-center items-center text-3xl bg-light text text-dk-100">

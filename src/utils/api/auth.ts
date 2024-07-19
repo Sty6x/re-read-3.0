@@ -1,4 +1,3 @@
-import { localStorageManager } from "@chakra-ui/react";
 import apiRoutes from "./apiRoutes";
 
 type t_authResponse = {
