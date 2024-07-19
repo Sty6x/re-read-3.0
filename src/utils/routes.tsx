@@ -4,6 +4,7 @@ import Register from "../routes/auth/components/Register";
 import App from "../routes/app/App";
 import Auth from "../routes/auth/Auth";
 import appLoader from "./loaders/app_loader/appLoader";
+import SetUsername from "../routes/auth/components/SetUsername";
 
 const router = createBrowserRouter([
   {
@@ -25,12 +26,19 @@ const router = createBrowserRouter([
         path: "register",
         element: <Register />,
       },
+
+      {
+        path: "username",
+        element: <SetUsername />,
+      }
     ],
   },
   {
     path: "/app",
     element: <App />,
-    loader: appLoader
+    loader: appLoader,
+    children: [
+    ]
   },
 ]);
 

@@ -132,6 +132,7 @@ export default function FormComponent({
       } catch (err: any) {
         console.log(err.message)
         setIsSubmiting(false);
+        setIsValidSubmit(false);
       }
     }
   }
