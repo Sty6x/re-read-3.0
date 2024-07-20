@@ -37,8 +37,6 @@ const router = createBrowserRouter([
     path: "/app",
     element: <App />,
     loader: appLoader,
-    children: [
-    ]
   },
 ]);
 

@@ -1,4 +1,4 @@
-import { Stack, Button, Spinner } from "@chakra-ui/react";
+import { Stack, Button } from "@chakra-ui/react";
 import FormInput from "./Input";
 import { FormEvent, useEffect, useState } from "react";
 import {
@@ -6,7 +6,6 @@ import {
   checkPasswordConfirmationValidity,
   checkPasswordValidity,
 } from "../../../utils/validation/authInputValidation";
-import globalStateInstance from "../../../utils/globalState";
 import displayMessage from "../../../utils/validation/displayMessage";
 import { useNavigate } from "react-router-dom";
 import AuthClient from "../../../utils/api/auth";
@@ -100,6 +99,7 @@ export default function FormComponent({
         throw new Error(response.message)
         return;
       }
+      console.log(response.message)
       navigate(response.redirect.route as string);
     } catch (err: any) {
       displayMessage({ isValid: false, message: err.message, value: "" });

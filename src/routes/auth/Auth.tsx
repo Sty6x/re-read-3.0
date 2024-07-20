@@ -7,21 +7,22 @@ export default function Auth(): React.ReactElement {
   const navigate = useNavigate();
 
   async function checkExistingUser() {
-    //try {
-    //  // to check if session cookie exists
-    //  const request = await fetch(`${ORIGIN_URL}/app/`, {
-    //    method: "GET",
-    //    mode: "cors",
-    //    credentials: "include",
-    //  });
-    //  const { sessionExpired, message } = await request.json();
-    //  if (sessionExpired) throw new Error(message);
-    //  return navigate("/app");
-    //} catch (err: any) {
-    //  console.log(err)
-    //  return navigate("/auth/login");
-    //}
-    return navigate("/auth/username");
+
+    try {
+      // to check if session cookie exists
+      const request = await fetch(`${ORIGIN_URL}/api/v1/`, {
+        method: "GET",
+        mode: "cors",
+        credentials: "include",
+      });
+      const { sessionExpired, message, redirect } = await request.json();
+      console.log(message)
+      if (sessionExpired) throw new Error(message);
+      return navigate(redirect.route);
+    } catch (err: any) {
+      console.log(err)
+      return navigate("/auth/login");
+    }
   }
 
   useEffect(() => {
