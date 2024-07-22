@@ -11,7 +11,8 @@ export default async () => {
       credentials: "include",
       headers: { "Content-Type": "application/json" },
     });
-    const { tokenInvalid, message, userData } = await request.json();
+    const { tokenInvalid, userQueryError, message, userData, redirect } =
+      await request.json();
     console.log(message);
     // dont need to handle errors if cookie expired,
     // browser will handle the checking if the cookie is expired or not
@@ -20,11 +21,29 @@ export default async () => {
     // just check if token is tampered when requesting `/all`
     // or any after `/app`api route since it passes through an
     // authentication middleware.
-    if (tokenInvalid) throw new Error("Invalid Token.");
+    if (tokenInvalid) {
+      throw new Error(
+        JSON.stringify({
+          message: "Invalid Token",
+          name: "JWTTokenError",
+          route: redirect.route,
+        }),
+      );
+    }
+    if (userQueryError) {
+      throw new Error(
+        JSON.stringify({
+          message: "User query error.",
+          name: "UserQueryError",
+          route: redirect.route,
+        }),
+      );
+    }
     console.log(userData);
     return { data: "Data" };
   } catch (err: any) {
-    console.error(err.message);
-    return redirect("/auth/login");
+    const parsedErr = JSON.parse(err.message);
+    console.error(parsedErr.message);
+    return redirect(parsedErr.route);
   }
 };

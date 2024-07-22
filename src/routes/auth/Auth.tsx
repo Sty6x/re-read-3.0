@@ -18,7 +18,7 @@ export default function Auth(): React.ReactElement {
       const { sessionExpired, message, redirect } = await request.json();
       console.log(message)
       if (sessionExpired) throw new Error(message);
-      return navigate(redirect.route);
+      return navigate("/app");
     } catch (err: any) {
       console.log(err)
       return navigate("/auth/login");
