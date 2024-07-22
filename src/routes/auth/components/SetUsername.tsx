@@ -30,7 +30,7 @@ export default function SetUsername(): React.ReactElement {
     setIsSubmiting(true);
     if (validateUsername()) {
       const userID = localStorage.getItem("userID")
-      const change = await fetch(`${ORIGIN_URL}/app/${userID}/settings/change?username=${usernameInput}`, { method: "POST", credentials: "include" });
+      const change = await fetch(`${ORIGIN_URL}/account/change?username=${usernameInput}&userID=${userID}`, { method: "POST", credentials: "include" });
       console.log(await change.json());
       setIsSubmiting(false);
       return;

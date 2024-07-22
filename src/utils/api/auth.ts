@@ -1,5 +1,7 @@
 import apiRoutes from "./apiRoutes";
 
+// IMPROVE ERROR HANDLING
+
 type t_authResponse = {
   message: string;
   redirect: {
@@ -50,32 +52,45 @@ class AuthClient {
   }
   async loginRequest(): Promise<t_authResponse> {
     try {
-      const response: t_authResponse = await this.authApi(
-        apiRoutes.auth.login,
-        { method: "POST", props: { credentials: "include" } },
-      );
-      return response;
+      const login = await fetch(apiRoutes.auth.login, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({ email: this.email, password: this.password }),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const loginData = await login.json();
+      console.log(loginData);
+      console.log("BRUUHH");
+      if (loginData.validityError) throw new Error(loginData.message);
+      localStorage.setItem("userID", loginData.userData._id);
+      return loginData;
     } catch (err: any) {
       console.error(err.message);
-      return returnError;
+      return { ...returnError, message: err.message };
     }
   }
   async registerRequest(): Promise<t_authResponse> {
     try {
-      const response: t_authResponse = await this.authApi(
-        apiRoutes.auth.register,
-        {
-          method: "POST",
-          props: { credentials: "include" },
-          headers: { Accept: "application/json" },
+      const register = await fetch(apiRoutes.auth.register, {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({ email: this.email, password: this.password }),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
-      console.log(response.userData);
-      localStorage.setItem("userID", response.userData._id);
-      return response;
+      });
+      const registeredData = await register.json();
+      console.log(registeredData);
+      if (registeredData.validityError) throw new Error(registeredData.message);
+      localStorage.setItem("userID", registeredData.userData._id);
+      return registeredData;
     } catch (err: any) {
       console.error(err.message);
-      return returnError;
+      return { ...returnError, message: err.message };
     }
   }
 }
