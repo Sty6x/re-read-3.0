@@ -10,7 +10,8 @@ export default function Auth(): React.ReactElement {
 
     try {
       // to check if session cookie exists
-      const request = await fetch(`${ORIGIN_URL}/api/v1/`, {
+      const userID = localStorage.getItem("userID");
+      const request = await fetch(`${ORIGIN_URL}/api/v1/?userID=${userID}`, {
         method: "GET",
         mode: "cors",
         credentials: "include",
@@ -18,7 +19,7 @@ export default function Auth(): React.ReactElement {
       const { sessionExpired, message, redirect } = await request.json();
       console.log(message)
       if (sessionExpired) throw new Error(message);
-      return navigate("/app");
+      return navigate(redirect.route);
     } catch (err: any) {
       console.log(err)
       return navigate("/auth/login");

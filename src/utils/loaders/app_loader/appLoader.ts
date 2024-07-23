@@ -11,9 +11,14 @@ export default async () => {
       credentials: "include",
       headers: { "Content-Type": "application/json" },
     });
-    const { tokenInvalid, userQueryError, message, userData, redirect } =
-      await request.json();
-    console.log(message);
+    const {
+      tokenInvalid,
+      userQueryError,
+      message,
+      userData,
+      redirect: { route },
+    } = await request.json();
+    console.log({ route, message });
     // dont need to handle errors if cookie expired,
     // browser will handle the checking if the cookie is expired or not
     // the server will then route users back to `auth/login` route.
@@ -26,7 +31,7 @@ export default async () => {
         JSON.stringify({
           message: "Invalid Token",
           name: "JWTTokenError",
-          route: redirect.route,
+          route: route,
         }),
       );
     }
@@ -35,13 +40,13 @@ export default async () => {
         JSON.stringify({
           message: "User query error.",
           name: "UserQueryError",
-          route: redirect.route,
+          route: route,
         }),
       );
     }
-    console.log(userData);
-    return { data: "Data" };
+    return "";
   } catch (err: any) {
+    console.log(err);
     const parsedErr = JSON.parse(err.message);
     console.error(parsedErr.message);
     return redirect(parsedErr.route);

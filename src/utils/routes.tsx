@@ -5,6 +5,7 @@ import App from "../routes/app/App";
 import Auth from "../routes/auth/Auth";
 import appLoader from "./loaders/app_loader/appLoader";
 import SetUsername from "../routes/auth/components/SetUsername";
+import Home from "../routes/app/outlets/Home";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,22 @@ const router = createBrowserRouter([
     path: "/app",
     element: <App />,
     loader: appLoader,
+    children: [
+
+      {
+        path: "home",
+        element: <Home />
+
+      },
+      {
+        path: "library",
+        element: <Home />
+      },
+      {
+        path: "book",
+        element: <Home />
+      }
+    ]
   },
 ]);
 
