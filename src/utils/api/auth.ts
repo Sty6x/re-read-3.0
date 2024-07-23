@@ -50,6 +50,9 @@ class AuthClient {
     });
     return await request.json();
   }
+
+  // I WANT TO ISOLATE ERROR HANDLING WITHIN THESE METHODS
+
   async loginRequest(): Promise<t_authResponse> {
     try {
       const login = await fetch(apiRoutes.auth.login, {
@@ -62,8 +65,6 @@ class AuthClient {
         },
       });
       const loginData = await login.json();
-      console.log(loginData);
-      console.log("BRUUHH");
       if (loginData.validityError) throw new Error(loginData.message);
       localStorage.setItem("userID", loginData.userData._id);
       return loginData;
